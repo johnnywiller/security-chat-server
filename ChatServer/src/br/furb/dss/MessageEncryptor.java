@@ -55,7 +55,7 @@ public class MessageEncryptor {
 		socket.getIn().readFully(packet);
 		
 		byte[] iv = Arrays.copyOf(packet, 16);
-		byte[] cipherText = Arrays.copyOfRange(packet, 17, packetLength);
+		byte[] cipherText = Arrays.copyOfRange(packet, iv.length, packetLength);
 				
 				
 		IvParameterSpec ivSpec = new IvParameterSpec(iv);
@@ -63,12 +63,12 @@ public class MessageEncryptor {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivSpec);
 		
-		System.out.println("PACKET--------------------");
-		System.out.print(packetLength);
-		System.out.println(Arrays.toString(packet));
-		System.out.println("--------------------");
-		System.out.println(Arrays.toString(cipherText));
-	
+//		System.out.println("PACKET--------------------");
+//		System.out.print(packetLength);
+//		System.out.println(Arrays.toString(packet));
+//		System.out.println("--------------------");
+//		System.out.println(Arrays.toString(cipherText));
+//	
 		byte[] plainText = cipher.doFinal(cipherText);
 
 		System.out.println("Plain text received: " + new String(plainText));
