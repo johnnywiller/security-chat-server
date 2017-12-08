@@ -52,7 +52,7 @@ public class MessageEncryptor {
 		byte[] packet = new byte[packetLength];
 
 		// read the packet
-		socket.getIn().read(packet);
+		socket.getIn().readFully(packet);
 
 		byte[] iv = Arrays.copyOf(packet, 16);
 		byte[] cipherText = Arrays.copyOfRange(packet, 16, packet.length - iv.length);
