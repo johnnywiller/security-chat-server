@@ -6,7 +6,7 @@ public class Main {
 		System.out.println("Started Server");
 		MessageEncryptor encryptor = new MessageEncryptor();
 		try {
-			encryptor.encryptMessage("ola mundo server");
+			encryptor.encryptMessage("ola mundo server2");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
