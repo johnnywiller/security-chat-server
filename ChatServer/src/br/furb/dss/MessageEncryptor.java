@@ -34,7 +34,7 @@ public class MessageEncryptor {
 
 		byte[] symmetricKey = dh.computeDHSecretKey((DHPrivateKey) keyPair.getPrivate(), publicKey);
 		
-		byte[] packet = new byte[128];
+		byte[] packet = new byte[512];
 
 		// read the packet 
 		socket.getIn().read(packet);
