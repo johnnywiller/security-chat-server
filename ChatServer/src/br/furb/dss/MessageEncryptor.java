@@ -46,7 +46,10 @@ public class MessageEncryptor {
 
 		SecretKeySpec secretKeySpec = new SecretKeySpec(symmetricKey, "AES");
 
-		byte[] packet = new byte[512];
+		// read the packet
+		byte packetLength =	socket.getIn().readByte();
+		
+		byte[] packet = new byte[packetLength];
 
 		// read the packet
 		socket.getIn().read(packet);
