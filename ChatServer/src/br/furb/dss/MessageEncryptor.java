@@ -1,6 +1,7 @@
 package br.furb.dss;
 
 import java.security.KeyPair;
+import java.security.MessageDigest;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -12,6 +13,9 @@ import javax.crypto.spec.SecretKeySpec;
 public class MessageEncryptor {
 
 	private ListeningSocket socket;
+
+	byte[] symmetricKey;
+	byte[] macKey;
 
 	public MessageEncryptor() {
 		try {
@@ -32,29 +36,35 @@ public class MessageEncryptor {
 
 		DHPublicKey publicKey = dh.getClientPublic(socket.getIn());
 
-		byte[] symmetricKey = dh.computeDHSecretKey((DHPrivateKey) keyPair.getPrivate(), publicKey);
-		
-		byte[] packet = new byte[512];
+		byte[] secret = dh.computeDHSecretKey((DHPrivateKey) keyPair.getPrivate(), publicKey);
 
-		// read the packet 
-		socket.getIn().read(packet);
-		
-		byte[] iv = Arrays.copyOf(packet, 16);
-		byte[] cipherText = Arrays.copyOfRange(packet, 16, packet.length - iv.length);
-		
-		IvParameterSpec ivSpec = new IvParameterSpec(iv);
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		secret = digest.digest(secret);
+
+		symmetricKey = Arrays.copyOf(secret, 16);
+		macKey = Arrays.copyOfRange(secret, 16, 32);
 
 		SecretKeySpec secretKeySpec = new SecretKeySpec(symmetricKey, "AES");
-		
+
+		byte[] packet = new byte[512];
+
+		// read the packet
+		socket.getIn().read(packet);
+
+		byte[] iv = Arrays.copyOf(packet, 16);
+		byte[] cipherText = Arrays.copyOfRange(packet, 16, packet.length - iv.length);
+
+		IvParameterSpec ivSpec = new IvParameterSpec(iv);
+
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivSpec);
-		
+
 		byte[] plainText = cipher.doFinal(cipherText);
-		
+
 		System.out.println("Plain text received: " + new String(plainText));
-		
-		//System.out.println("SERVER secret");
-		//System.out.println(Arrays.toString(secret));
+
+		// System.out.println("SERVER secret");
+		// System.out.println(Arrays.toString(secret));
 	}
 
 }
