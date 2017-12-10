@@ -20,7 +20,7 @@ public class DiffieHellmanUitls {
 	public KeyPair generateKeyPair() throws NoSuchAlgorithmException {
 
 		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DH");
-		keyPairGenerator.initialize(2048);
+		keyPairGenerator.initialize(1024);
 
 		return keyPairGenerator.generateKeyPair();
 
@@ -50,7 +50,7 @@ public class DiffieHellmanUitls {
 	public DHPublicKey getClientPublic(ObjectInputStream in) throws Exception {
 
 		KeyFactory factory = KeyFactory.getInstance("DH");
-
+		
 		BigInteger p, g, y;
 
 		p = (BigInteger) in.readObject();
