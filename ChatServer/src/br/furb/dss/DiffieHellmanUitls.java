@@ -20,7 +20,7 @@ public class DiffieHellmanUitls {
 	public KeyPair generateKeyPair() throws NoSuchAlgorithmException {
 
 		final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DH");
-		keyPairGenerator.initialize(1024);
+		keyPairGenerator.initialize(2048);
 
 		return keyPairGenerator.generateKeyPair();
 
