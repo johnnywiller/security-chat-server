@@ -2,7 +2,6 @@ package br.furb.dss;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -34,7 +33,9 @@ public class ListeningSocket extends Thread {
 	private void acceptSocket() throws IOException {
 		
 		Socket sock = serverSocket.accept();
-
+		
+		System.out.println("Received connection from " + sock.getInetAddress().getHostAddress());
+		
 		SocketClient client = new SocketClient();
 		
 		ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
@@ -44,7 +45,10 @@ public class ListeningSocket extends Thread {
 
 		ConnectionsHandler.getHandler().addClient(client);
 		
+		ClientThread clientThread = new ClientThread(client);
+		clientThread.start();
 		
+
 		
 	}
 
