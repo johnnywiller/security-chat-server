@@ -12,7 +12,9 @@ public class ListeningSocket extends Thread {
 	private final int SO_TIMEOUT = 10 * 1000 * 3600;
 
 	private ServerSocket serverSocket;
-
+	
+	private int counter;
+	
 	public ListeningSocket() throws IOException {
 
 		serverSocket = new ServerSocket(SERVER_PORT);
@@ -47,7 +49,7 @@ public class ListeningSocket extends Thread {
 		
 		//client.setName(in.readUTF());
 		client.setSocket(sock);
-		client.setName("teste222");
+		client.setName(String.valueOf(counter++));
 		ConnectionsHandler.getHandler().addClient(client);
 		
 		ClientThread clientThread = new ClientThread(client);

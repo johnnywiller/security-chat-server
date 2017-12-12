@@ -16,18 +16,38 @@ public class ClientThread extends Thread {
 		while (true) {
 
 			String received;
-			
+
 			try {
-				
-				
+
 				received = thisClient.getIn().readUTF();
 
-				System.out.println("Read " + received + " from " + thisClient.getSocket().getInetAddress().getHostAddress() + ":" + thisClient.getSocket().getPort());
+				System.out.println(
+						"Read " + received + " from " + thisClient.getSocket().getInetAddress().getHostAddress() + ":"
+								+ thisClient.getSocket().getPort() + " name = [" + thisClient.getName() + "]");
+
+				String[] tokenized = received.split(" ");
+
+				if (tokenized[0].equals("/msg")) {
+
+					String user = tokenized[1];
+
+					SocketClient destUser = ConnectionsHandler.getHandler().getClient(user);
+
+					destUser.getOut().writeUTF(tokenized[2]);
+
+				}
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				break;
 			}
 
+		}
+
+		try {
+			if (!thisClient.getSocket().isClosed())
+				thisClient.getSocket().close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}

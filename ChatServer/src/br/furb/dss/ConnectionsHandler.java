@@ -22,4 +22,8 @@ public class ConnectionsHandler {
 		clients.put(client.getName(), client);
 	}
 	
+	public SocketClient getClient(String name) {
+		return clients.get(name);
+	}
+	
 }
