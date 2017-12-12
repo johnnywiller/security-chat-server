@@ -18,7 +18,8 @@ public class ClientThread extends Thread {
 			String received;
 			
 			try {
-			
+				
+				
 				received = thisClient.getIn().readUTF();
 
 				System.out.println("Read " + received + " from " + thisClient.getName());
