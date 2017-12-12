@@ -1,6 +1,7 @@
 package br.furb.dss;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ClientThread extends Thread {
 
@@ -27,12 +28,14 @@ public class ClientThread extends Thread {
 
 				String[] tokenized = received.split(" ");
 
+				Arrays.toString(tokenized);
+				
 				if (tokenized[0].equals("/msg")) {
 
 					String user = tokenized[1];
 
 					SocketClient destUser = ConnectionsHandler.getHandler().getClient(user);
-
+					System.out.println("dest user " + destUser.getName());
 					destUser.getOut().writeUTF(tokenized[2]);
 
 				}
