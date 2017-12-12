@@ -1,17 +1,17 @@
 package br.furb.dss;
 
+import java.io.IOException;
+
 public class Main {
 
-	public static void main(String[] args) {
-		System.out.println("Started Server");
-		MessageEncryptor encryptor = new MessageEncryptor();
-		try {
-			encryptor.encryptMessage("ola mundo server2");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws IOException {
+		
+		System.out.println("[STARTED SERVER]");
+
+		ListeningSocket listen = new ListeningSocket();
+		
+		listen.start();
+		
 	}
-	
-	
+
 }

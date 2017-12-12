@@ -1,38 +1,51 @@
 package br.furb.dss;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 
-public class ListeningSocket {
+public class ListeningSocket extends Thread {
 
-	private ObjectOutputStream out;
-	private ObjectInputStream in;
+	private final int SERVER_PORT = 6678;
+	private final int SO_TIMEOUT = 10 * 1000 * 3600;
 
-	private HashMap<String, Socket> clients = new HashMap<>();
+	private ServerSocket serverSocket;
 
-	public ListeningSocket() throws Exception {
+	public ListeningSocket() throws IOException {
 
-		ServerSocket socket = new ServerSocket(6678);
-		socket.setSoTimeout(10 * 1000 * 3600);
-
-		Socket client = socket.accept();
-
-		//clients.put(client.getInetAddress().getHostAddress(), client);
-
-		this.in = new ObjectInputStream(client.getInputStream());
-		this.out = new ObjectOutputStream(client.getOutputStream());
+		serverSocket = new ServerSocket(SERVER_PORT);
+		serverSocket.setSoTimeout(SO_TIMEOUT);
 
 	}
 
-	public ObjectOutputStream getOut() {
-		return out;
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				acceptSocket();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	public ObjectInputStream getIn() {
-		return in;
+	private void acceptSocket() throws IOException {
+		
+		Socket sock = serverSocket.accept();
+
+		SocketClient client = new SocketClient();
+		
+		ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
+		
+		client.setName(in.readUTF());
+		client.setSocket(sock);
+
+		ConnectionsHandler.getHandler().addClient(client);
+		
+		
+		
 	}
 
 }

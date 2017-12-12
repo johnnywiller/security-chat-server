@@ -27,41 +27,41 @@ public class MessageEncryptor {
 	}
 
 	public void encryptMessage(String msg) throws Exception {
-
-		DiffieHellmanUitls dh = new DiffieHellmanUitls();
-
-		KeyPair keyPair = dh.generateKeyPair();
-
-		dh.passPublicToClient((DHPublicKey) keyPair.getPublic(), socket.getOut());
-
-		DHPublicKey publicKey = dh.getClientPublic(socket.getIn());
-
-		byte[] secret = dh.computeDHSecretKey((DHPrivateKey) keyPair.getPrivate(), publicKey);
-
-		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		secret = digest.digest(secret);
-
-		symmetricKey = Arrays.copyOf(secret, 16);
-		macKey = Arrays.copyOfRange(secret, 16, 32);
-
-		SecretKeySpec secretKeySpec = new SecretKeySpec(symmetricKey, "AES");
-
-		// read the packet
-		byte packetLength =	socket.getIn().readByte();
-		
-		byte[] packet = new byte[packetLength];
-
-		// read the packet
-		socket.getIn().readFully(packet);
-		
-		byte[] iv = Arrays.copyOf(packet, 16);
-		byte[] cipherText = Arrays.copyOfRange(packet, iv.length, packetLength);
-				
-				
-		IvParameterSpec ivSpec = new IvParameterSpec(iv);
-
-		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivSpec);
+//
+//		DiffieHellmanUitls dh = new DiffieHellmanUitls();
+//
+//		KeyPair keyPair = dh.generateKeyPair();
+//
+//		dh.passPublicToClient((DHPublicKey) keyPair.getPublic(), socket.getOut());
+//
+//		DHPublicKey publicKey = dh.getClientPublic(socket.getIn());
+//
+//		byte[] secret = dh.computeDHSecretKey((DHPrivateKey) keyPair.getPrivate(), publicKey);
+//
+//		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//		secret = digest.digest(secret);
+//
+//		symmetricKey = Arrays.copyOf(secret, 16);
+//		macKey = Arrays.copyOfRange(secret, 16, 32);
+//
+//		SecretKeySpec secretKeySpec = new SecretKeySpec(symmetricKey, "AES");
+//
+//		// read the packet
+//		byte packetLength =	socket.getIn().readByte();
+//		
+//		byte[] packet = new byte[packetLength];
+//
+//		// read the packet
+//		socket.getIn().readFully(packet);
+//		
+//		byte[] iv = Arrays.copyOf(packet, 16);
+//		byte[] cipherText = Arrays.copyOfRange(packet, iv.length, packetLength);
+//				
+//				
+//		IvParameterSpec ivSpec = new IvParameterSpec(iv);
+//
+//		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+//		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivSpec);
 		
 //		System.out.println("PACKET--------------------");
 //		System.out.print(packetLength);
@@ -69,9 +69,9 @@ public class MessageEncryptor {
 //		System.out.println("--------------------");
 //		System.out.println(Arrays.toString(cipherText));
 //	
-		byte[] plainText = cipher.doFinal(cipherText);
-
-		System.out.println("Plain text received: " + new String(plainText));
+//		byte[] plainText = cipher.doFinal(cipherText);
+//
+//		System.out.println("Plain text received: " + new String(plainText));
 
 		// System.out.println("SERVER secret");
 		// System.out.println(Arrays.toString(secret));
