@@ -22,7 +22,7 @@ public class ClientThread extends Thread {
 				
 				received = thisClient.getIn().readUTF();
 
-				System.out.println("Read " + received + " from " + thisClient.getName());
+				System.out.println("Read " + received + " from " + thisClient.getSocket().getInetAddress().getHostAddress() + ":" + thisClient.getSocket().getPort());
 
 			} catch (IOException e) {
 				e.printStackTrace();
