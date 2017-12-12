@@ -40,9 +40,9 @@ public class ListeningSocket extends Thread {
 		
 		ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 		
-		client.setName(in.readUTF());
+		//client.setName(in.readUTF());
 		client.setSocket(sock);
-
+		client.setName("teste222");
 		ConnectionsHandler.getHandler().addClient(client);
 		
 		ClientThread clientThread = new ClientThread(client);
