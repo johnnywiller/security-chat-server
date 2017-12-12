@@ -27,16 +27,18 @@ public class ClientThread extends Thread {
 								+ thisClient.getSocket().getPort() + " name = [" + thisClient.getName() + "]");
 
 				String[] tokenized = received.split(" ");
-
+				
 				Arrays.toString(tokenized);
 				
 				if (tokenized[0].equals("/msg")) {
 
 					String user = tokenized[1];
-
+					String msg = received.substring(received.indexOf(tokenized[1]) + 1);
+							
 					SocketClient destUser = ConnectionsHandler.getHandler().getClient(user);
 					System.out.println("dest user " + destUser.getName());
-					destUser.getOut().writeUTF(tokenized[2]);
+					destUser.getOut().writeUTF(msg);
+					destUser.getOut().flush();
 
 				}
 
