@@ -24,6 +24,7 @@ public class MessageEncryptor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void encryptMessage(String msg) throws Exception {
