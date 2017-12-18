@@ -28,6 +28,7 @@ public class ClientThread extends Thread {
 				parsePacket(received);
 
 			} catch (Exception e) {
+				System.out.println("Client = " + thisClient.getName() + " \n " + e.getMessage());
 				break;
 			}
 		}
