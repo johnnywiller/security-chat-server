@@ -21,6 +21,7 @@ public class ClientThread extends Thread {
 			byte[] received = new byte[255];
 
 			try {
+				
 				System.out.println("aqui");
 				thisClient.getIn().read(received);
 				
@@ -38,6 +39,7 @@ public class ClientThread extends Thread {
 		}
 
 		try {
+			System.out.println("closed");
 			if (!thisClient.getSocket().isClosed())
 				thisClient.getSocket().close();
 		} catch (IOException e) {
