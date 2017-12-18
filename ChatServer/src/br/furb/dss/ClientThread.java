@@ -47,7 +47,9 @@ public class ClientThread extends Thread {
 	private void parsePacket(byte[] packet) throws IOException, ClassNotFoundException {
 
 		String msg = new String(packet);
-
+		
+		System.out.println("received " + msg);
+		
 		String[] tokenized = msg.split(" ");
 
 		switch (tokenized[0]) {
