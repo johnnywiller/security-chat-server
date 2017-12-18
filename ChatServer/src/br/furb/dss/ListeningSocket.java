@@ -55,10 +55,12 @@ public class ListeningSocket extends Thread {
 
 		client.setPublicKey(receivePublicKey(client));
 		client.setSocket(sock);
-		client.setName(String.valueOf("abc" + counter++));
+		client.setName(String.valueOf("DSS-" + counter++));
 		ConnectionsHandler.getHandler().addClient(client);
 
-		System.out.println("Client name is " + client.getName());
+		String welcome = "Seja bem vindo, seu nome de usuário é " + client.getName();
+
+		sock.getOutputStream().write(welcome.getBytes());
 
 		ClientThread clientThread = new ClientThread(client);
 		clientThread.start();

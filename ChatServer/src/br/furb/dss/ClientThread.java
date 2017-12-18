@@ -38,10 +38,13 @@ public class ClientThread extends Thread {
 
 		try {
 			System.out.println(thisClient.getName() + " has leaved the room");
-			if (!thisClient.getSocket().isClosed())
+			if (!thisClient.getSocket().isClosed()) {
 				thisClient.getSocket().close();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			ConnectionsHandler.getHandler().removeClient(thisClient.getName());
 		}
 
 	}
@@ -70,6 +73,10 @@ public class ClientThread extends Thread {
 		case "/getpublic":
 			requestPublicKey(tokenized[1]);
 			break;
+
+		case "/online":
+			requestOnlineUsers();
+			break;
 		default:
 			// default is to send message to another user
 			byte[] bytesFromUser = Arrays.copyOf(resizedPacket, 10);
@@ -79,6 +86,17 @@ public class ClientThread extends Thread {
 			routeToUser(packet, fromUser);
 
 		}
+	}
+
+	private void requestOnlineUsers() throws IOException {
+
+		thisClient.getOut().write("/online".getBytes());
+
+		for (String user : ConnectionsHandler.getHandler().getUsers()) {
+			thisClient.getOut().write(user.getBytes());
+		}
+
+		thisClient.getOut().write("/endonline".getBytes());
 	}
 
 	private void requestPublicKey(String who) throws IOException {

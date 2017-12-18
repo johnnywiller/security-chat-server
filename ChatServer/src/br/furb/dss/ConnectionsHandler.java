@@ -1,6 +1,7 @@
 package br.furb.dss;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class ConnectionsHandler {
 	
@@ -16,6 +17,10 @@ public class ConnectionsHandler {
 			handler = new ConnectionsHandler();
 		
 		return handler;
+	}
+	
+	public Set<String> getUsers() {
+		return clients.keySet();
 	}
 	
 	public void removeClient(String key) {
