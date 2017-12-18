@@ -52,10 +52,10 @@ public class ClientThread extends Thread {
 
 		String msg = new String(packet);
 		
-		System.out.println("received " + msg);
-		
 		String[] tokenized = msg.split(" ");
 
+		System.out.println("token 0 = " + tokenized[0]);
+		
 		switch (tokenized[0]) {
 
 		case "/msg":
@@ -94,7 +94,9 @@ public class ClientThread extends Thread {
 	}
 	
 	private void startSession(String client) throws IOException, ClassNotFoundException {
-
+		
+		System.out.println("starting session");
+		
 		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client);
 
 		String msg = "/startsession " + thisClient.getName();
