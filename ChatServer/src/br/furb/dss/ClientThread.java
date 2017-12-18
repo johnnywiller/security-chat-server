@@ -85,7 +85,7 @@ public class ClientThread extends Thread {
 
 	private void ackSession(String client) throws ClassNotFoundException, IOException {
 		
-		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client);
+		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client.trim());
 		
 		BigInteger p, g, y;
 
