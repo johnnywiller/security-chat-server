@@ -28,8 +28,6 @@ public class ClientThread extends Thread {
 
 				thisClient.getIn().read(received);
 
-				// received = getResizedPacket(received);
-
 				parsePacket(received);
 
 			} catch (Exception e) {
@@ -40,7 +38,7 @@ public class ClientThread extends Thread {
 		}
 
 		try {
-			System.out.println("closed");
+			System.out.println(thisClient.getName() + " has leaved the room");
 			if (!thisClient.getSocket().isClosed())
 				thisClient.getSocket().close();
 		} catch (IOException e) {
@@ -56,8 +54,6 @@ public class ClientThread extends Thread {
 		String msg = new String(resizedPacket);
 
 		String[] tokenized = msg.split(" ");
-
-		System.out.println("token 0 = " + tokenized[0]);
 
 		switch (tokenized[0].trim()) {
 
@@ -83,13 +79,8 @@ public class ClientThread extends Thread {
 
 	private void routeToUser(byte[] packet, String user) throws IOException {
 
-		System.out.println("routing");
-
 		// get user keys
 		SocketClient toSend = ConnectionsHandler.getHandler().getClient(user);
-
-		if (toSend == null)
-			System.out.println("to send null");
 
 		// change user header
 		System.arraycopy(ourNameInBytes, 0, packet, 1, ourNameInBytes.length);
