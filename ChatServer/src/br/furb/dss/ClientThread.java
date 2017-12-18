@@ -118,20 +118,20 @@ public class ClientThread extends Thread {
 
 		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client.trim());
 
-		byte[] dhParam = new byte[384];
+		byte[] dhParam = new byte[385];
 
 		// read P
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
-		
+
 		// read G
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
-		
+
 		// read Y
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
@@ -157,20 +157,20 @@ public class ClientThread extends Thread {
 		sclient.getOut().write(packet);
 		sclient.getOut().flush();
 
-		byte[] dhParam = new byte[384];
+		byte[] dhParam = new byte[385];
 
 		// read P
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
-		
+
 		// read G
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
-		
+
 		// read Y
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
