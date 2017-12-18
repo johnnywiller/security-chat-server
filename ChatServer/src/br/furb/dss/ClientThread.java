@@ -10,8 +10,11 @@ public class ClientThread extends Thread {
 
 	private final int MAX_BUF_SIZE = 255;
 
+	private byte[] ourNameInBytes;
+
 	public ClientThread(SocketClient client) {
 		this.thisClient = client;
+		this.ourNameInBytes = String.format("%1$10s", client.getName()).getBytes();
 	}
 
 	@Override
@@ -25,7 +28,7 @@ public class ClientThread extends Thread {
 
 				thisClient.getIn().read(received);
 
-				//received = getResizedPacket(received);
+				// received = getResizedPacket(received);
 
 				parsePacket(received);
 
@@ -47,9 +50,9 @@ public class ClientThread extends Thread {
 	}
 
 	private void parsePacket(byte[] packet) throws IOException, ClassNotFoundException, InterruptedException {
-		
+
 		byte[] resizedPacket = getResizedPacket(packet);
-		
+
 		String msg = new String(resizedPacket);
 
 		String[] tokenized = msg.split(" ");
@@ -87,6 +90,9 @@ public class ClientThread extends Thread {
 
 		if (toSend == null)
 			System.out.println("to send null");
+
+		// change user header
+		System.arraycopy(ourNameInBytes, 0, packet, 1, ourNameInBytes.length);
 
 		toSend.getOut().write(packet);
 		toSend.getOut().flush();
