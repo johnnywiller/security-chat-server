@@ -67,7 +67,7 @@ public class ListeningSocket extends Thread {
 
 	private PublicKey receivePublicKey(SocketClient client) throws Exception {
 
-		byte[] pubKey = new byte[256];
+		byte[] pubKey = new byte[300];
 
 		client.getIn().read(pubKey);
 
