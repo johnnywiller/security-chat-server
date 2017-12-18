@@ -97,18 +97,22 @@ public class ClientThread extends Thread {
 		}
 
 		thisClient.getOut().write("/endonline".getBytes());
-		
+
 		thisClient.getOut().flush();
 	}
 
 	private void requestPublicKey(String who) throws IOException {
 
-		byte[] pubKey = new byte[256];
+		byte[] pubKey = new byte[385];
 
 		// get user keys
 		SocketClient sWho = ConnectionsHandler.getHandler().getClient(who);
 
-		thisClient.getOut().write(sWho.getPublicKey().getEncoded());
+		pubKey[0] = (byte) ((sWho.getPublicKey().getEncoded().length - 200));
+
+		System.arraycopy(sWho.getPublicKey().getEncoded(), 0, pubKey, 1, sWho.getPublicKey().getEncoded().length);
+
+		thisClient.getOut().write(pubKey);
 		thisClient.getOut().flush();
 
 	}
@@ -147,7 +151,7 @@ public class ClientThread extends Thread {
 		sclient.getOut().flush();
 
 		dhParam = new byte[385];
-		
+
 		// read G
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
@@ -155,7 +159,7 @@ public class ClientThread extends Thread {
 		sclient.getOut().flush();
 
 		dhParam = new byte[385];
-		
+
 		// read Y
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
@@ -190,7 +194,7 @@ public class ClientThread extends Thread {
 		sclient.getOut().flush();
 
 		dhParam = new byte[385];
-		
+
 		// read G
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
@@ -198,7 +202,7 @@ public class ClientThread extends Thread {
 		sclient.getOut().flush();
 
 		dhParam = new byte[385];
-		
+
 		// read Y
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
