@@ -1,11 +1,13 @@
 package br.furb.dss;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.math.BigInteger;
 
 public class ClientThread extends Thread {
 
 	private SocketClient thisClient;
+
+	private final int MAX_BUF_SIZE = 255;
 
 	public ClientThread(SocketClient client) {
 		this.thisClient = client;
@@ -16,34 +18,19 @@ public class ClientThread extends Thread {
 
 		while (true) {
 
-			String received;
+			byte[] received = new byte[255];
 
 			try {
 
-				received = thisClient.getIn().readUTF();
+				thisClient.getIn().read(received);
 
-				System.out.println(
-						"Read " + received + " from " + thisClient.getSocket().getInetAddress().getHostAddress() + ":"
-								+ thisClient.getSocket().getPort() + " name = [" + thisClient.getName() + "]");
-
-				String[] tokenized = received.split(" ");
-				
-				Arrays.toString(tokenized);
-				
-				if (tokenized[0].equals("/msg")) {
-
-					String user = tokenized[1];
-					String msg = received.substring(received.indexOf(tokenized[1]) + 1);
-							
-					SocketClient destUser = ConnectionsHandler.getHandler().getClient(user);
-					System.out.println("dest user " + destUser.getName());
-					destUser.getOut().writeUTF(msg);
-					destUser.getOut().flush();
-
-				}
+				parsePacket(received);
 
 			} catch (IOException e) {
 				break;
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 		}
@@ -55,6 +42,76 @@ public class ClientThread extends Thread {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void parsePacket(byte[] packet) throws IOException, ClassNotFoundException {
+
+		String msg = new String(packet);
+
+		String[] tokenized = msg.split(" ");
+
+		switch (tokenized[0]) {
+
+		case "/msg":
+			break;
+
+		case "/startsession":
+			startSession(tokenized[1]);
+			break;
+		
+		
+		case "/acksession":
+			ackSession(tokenized[1]);
+			break;
+			
+		}
+	}
+
+	private void ackSession(String client) throws ClassNotFoundException, IOException {
+		
+		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client);
+		
+		BigInteger p, g, y;
+
+		p = (BigInteger) thisClient.getIn().readObject();
+		g = (BigInteger) thisClient.getIn().readObject();
+		y = (BigInteger) thisClient.getIn().readObject();
+		
+		sclient.getOut().writeObject(p);
+		sclient.getOut().writeObject(g);
+		sclient.getOut().writeObject(y);
+		
+		sclient.getOut().flush();
+		
+	}
+	
+	private void startSession(String client) throws IOException, ClassNotFoundException {
+
+		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client);
+
+		String msg = "/startsession " + thisClient.getName();
+
+		byte[] packet = new byte[msg.length() + 1];
+
+		packet[0] = (byte) msg.length();
+
+		System.arraycopy(msg.getBytes(), 0, packet, 1, msg.getBytes().length);
+
+		sclient.getOut().write(packet);
+		sclient.getOut().flush();
+		
+		BigInteger p, g, y;
+
+		p = (BigInteger) thisClient.getIn().readObject();
+		g = (BigInteger) thisClient.getIn().readObject();
+		y = (BigInteger) thisClient.getIn().readObject();
+		
+		sclient.getOut().writeObject(p);
+		sclient.getOut().writeObject(g);
+		sclient.getOut().writeObject(y);
+		
+		sclient.getOut().flush();
+		
 	}
 
 }
