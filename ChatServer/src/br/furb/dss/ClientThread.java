@@ -66,7 +66,7 @@ public class ClientThread extends Thread {
 			  
 		case "/startsession":
 			System.out.println("Received start session, I'm " + thisClient.getName());
-			startSession(tokenized[1]);
+			startSession(tokenized[1].trim());
 			break;
 		
 		
@@ -103,7 +103,7 @@ public class ClientThread extends Thread {
 	
 	private void startSession(String client) throws IOException, ClassNotFoundException {
 		
-		System.out.println("starting session");
+		System.out.println("starting session client = " + client);
 		
 		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client);
 
