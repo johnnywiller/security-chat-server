@@ -25,7 +25,7 @@ public class ClientThread extends Thread {
 
 				thisClient.getIn().read(received);
 
-				received = getResizedPacket(received);
+				//received = getResizedPacket(received);
 
 				parsePacket(received);
 
@@ -47,8 +47,10 @@ public class ClientThread extends Thread {
 	}
 
 	private void parsePacket(byte[] packet) throws IOException, ClassNotFoundException, InterruptedException {
-
-		String msg = new String(packet);
+		
+		byte[] resizedPacket = getResizedPacket(packet);
+		
+		String msg = new String(resizedPacket);
 
 		String[] tokenized = msg.split(" ");
 
@@ -67,23 +69,21 @@ public class ClientThread extends Thread {
 			break;
 		default:
 			// default is to send message to another user
-			routeToUser(packet);
+			byte[] bytesFromUser = Arrays.copyOf(resizedPacket, 10);
+
+			String fromUser = new String(bytesFromUser).trim();
+
+			routeToUser(packet, fromUser);
 
 		}
 	}
 
-	private void routeToUser(byte[] packet) throws IOException {
+	private void routeToUser(byte[] packet, String user) throws IOException {
 
 		System.out.println("routing");
 
-		byte[] bytesFromUser = Arrays.copyOf(packet, 10);
-
-		String fromUser = new String(bytesFromUser).trim();
-
-		System.out.println("FROM user =" + fromUser + ".");
-
 		// get user keys
-		SocketClient toSend = ConnectionsHandler.getHandler().getClient(fromUser);
+		SocketClient toSend = ConnectionsHandler.getHandler().getClient(user);
 
 		if (toSend == null)
 			System.out.println("to send null");
