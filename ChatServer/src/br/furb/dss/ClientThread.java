@@ -1,7 +1,6 @@
 package br.furb.dss;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Arrays;
 
 public class ClientThread extends Thread {
@@ -66,6 +65,8 @@ public class ClientThread extends Thread {
 			System.out.println("Received ack session, I'm " + thisClient.getName());
 			ackSession(tokenized[1]);
 			break;
+		case "/changeuser":
+			break;
 		default:
 			// default is to send message to another user
 			byte[] bytesFromUser = Arrays.copyOf(resizedPacket, 10);
@@ -90,19 +91,31 @@ public class ClientThread extends Thread {
 
 	}
 
+	private void changeUsername(String name) {
+
+		ConnectionsHandler.getHandler().removeClient(thisClient.getName());
+		thisClient.setName(name);
+		ConnectionsHandler.getHandler().addClient(thisClient);
+
+	}
+
 	private void ackSession(String client) throws ClassNotFoundException, IOException {
 
 		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client.trim());
 
-		BigInteger p, g, y;
+		byte[] dhParam = new byte[512];
 
-		p = (BigInteger) thisClient.getIn().readObject();
-		g = (BigInteger) thisClient.getIn().readObject();
-		y = (BigInteger) thisClient.getIn().readObject();
+		// read P
+		thisClient.getIn().read(dhParam);
+		sclient.getOut().write(dhParam);
 
-		sclient.getOut().writeObject(p);
-		sclient.getOut().writeObject(g);
-		sclient.getOut().writeObject(y);
+		// read G
+		thisClient.getIn().read(dhParam);
+		sclient.getOut().write(dhParam);
+
+		// read Y
+		thisClient.getIn().read(dhParam);
+		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
 
@@ -125,15 +138,19 @@ public class ClientThread extends Thread {
 		sclient.getOut().write(packet);
 		sclient.getOut().flush();
 
-		BigInteger p, g, y;
+		byte[] dhParam = new byte[512];
 
-		p = (BigInteger) thisClient.getIn().readObject();
-		g = (BigInteger) thisClient.getIn().readObject();
-		y = (BigInteger) thisClient.getIn().readObject();
+		// read P
+		thisClient.getIn().read(dhParam);
+		sclient.getOut().write(dhParam);
 
-		sclient.getOut().writeObject(p);
-		sclient.getOut().writeObject(g);
-		sclient.getOut().writeObject(y);
+		// read G
+		thisClient.getIn().read(dhParam);
+		sclient.getOut().write(dhParam);
+
+		// read Y
+		thisClient.getIn().read(dhParam);
+		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
 

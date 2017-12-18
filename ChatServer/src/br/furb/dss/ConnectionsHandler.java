@@ -18,7 +18,11 @@ public class ConnectionsHandler {
 		return handler;
 	}
 	
-	public void addClient(SocketClient client) {
+	public void removeClient(String key) {
+		clients.remove(key);
+	}
+	
+	public void addClient(SocketClient client) {		
 		clients.put(client.getName(), client);
 	}
 	

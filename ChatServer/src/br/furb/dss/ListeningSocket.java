@@ -32,11 +32,14 @@ public class ListeningSocket extends Thread {
 				acceptSocket();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
 
-	private void acceptSocket() throws IOException {
+	private void acceptSocket() throws Exception {
 
 		Socket sock = serverSocket.accept();
 
@@ -49,9 +52,8 @@ public class ListeningSocket extends Thread {
 
 		client.setOut(out);
 		client.setIn(in);
-		
-		client.set
-		// client.setName(in.readUTF());
+
+		client.setPublicKey(receivePublicKey(client));
 		client.setSocket(sock);
 		client.setName(String.valueOf("abc" + counter++));
 		ConnectionsHandler.getHandler().addClient(client);
@@ -66,11 +68,11 @@ public class ListeningSocket extends Thread {
 	private PublicKey receivePublicKey(SocketClient client) throws Exception {
 
 		byte[] pubKey = new byte[256];
-		
+
 		client.getIn().read(pubKey);
-		
+
 		PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pubKey));
-		
+
 		return publicKey;
 	}
 
