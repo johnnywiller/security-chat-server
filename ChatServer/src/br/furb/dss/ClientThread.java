@@ -119,6 +119,7 @@ public class ClientThread extends Thread {
 		thisClient.getOut().flush();
 		
 		System.out.println("MANDOU CHAVE PUBLICA PARA CLIENTE " + thisClient.getName());
+		System.out.println("Comprimento da chave: " + sWho.getPublicKey().getEncoded().length);
 
 	}
 
