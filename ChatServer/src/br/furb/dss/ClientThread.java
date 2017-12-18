@@ -59,7 +59,7 @@ public class ClientThread extends Thread {
 
 		System.out.println("token 0 = " + tokenized[0]);
 		
-		switch (tokenized[0]) {
+		switch (tokenized[0].trim()) {
 
 		case "/msg":
 			break;
