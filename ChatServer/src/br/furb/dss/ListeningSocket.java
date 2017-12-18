@@ -52,6 +52,8 @@ public class ListeningSocket extends Thread {
 		client.setName(String.valueOf(counter++));
 		ConnectionsHandler.getHandler().addClient(client);
 		
+		System.out.println("Client name is " + client.getName());
+		
 		ClientThread clientThread = new ClientThread(client);
 		clientThread.start();
 		

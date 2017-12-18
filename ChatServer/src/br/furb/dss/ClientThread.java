@@ -56,11 +56,13 @@ public class ClientThread extends Thread {
 			break;
 
 		case "/startsession":
+			System.out.println("Received start session, I'm " + thisClient.getName());
 			startSession(tokenized[1]);
 			break;
 		
 		
 		case "/acksession":
+			System.out.println("Received ack session, I'm " + thisClient.getName());
 			ackSession(tokenized[1]);
 			break;
 			
