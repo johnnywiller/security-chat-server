@@ -34,6 +34,9 @@ public class ClientThread extends Thread {
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 		}
@@ -48,7 +51,7 @@ public class ClientThread extends Thread {
 
 	}
 
-	private void parsePacket(byte[] packet) throws IOException, ClassNotFoundException {
+	private void parsePacket(byte[] packet) throws IOException, ClassNotFoundException, InterruptedException {
 
 		String msg = new String(packet);
 		
@@ -60,7 +63,7 @@ public class ClientThread extends Thread {
 
 		case "/msg":
 			break;
-
+			  
 		case "/startsession":
 			System.out.println("Received start session, I'm " + thisClient.getName());
 			startSession(tokenized[1]);
@@ -71,7 +74,12 @@ public class ClientThread extends Thread {
 			System.out.println("Received ack session, I'm " + thisClient.getName());
 			ackSession(tokenized[1]);
 			break;
-			
+			default:
+				System.out.println("caiu default");
+				synchronized (this) {
+					sleep(10000);	
+				}
+				
 		}
 	}
 
