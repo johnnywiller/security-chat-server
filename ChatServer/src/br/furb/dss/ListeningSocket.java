@@ -49,7 +49,7 @@ public class ListeningSocket extends Thread {
 		
 		//client.setName(in.readUTF());
 		client.setSocket(sock);
-		client.setName(String.valueOf(counter++));
+		client.setName(String.valueOf("abc" + counter++));
 		ConnectionsHandler.getHandler().addClient(client);
 		
 		System.out.println("Client name is " + client.getName());
