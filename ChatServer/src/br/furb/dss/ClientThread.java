@@ -22,10 +22,10 @@ public class ClientThread extends Thread {
 
 			try {
 				
-				System.out.println("aqui");
+				//System.out.println("aqui");
 				thisClient.getIn().read(received);
 				
-				System.out.println("read");
+			//	System.out.println("read");
 				
 				parsePacket(received);
 
@@ -52,7 +52,7 @@ public class ClientThread extends Thread {
 
 		String msg = new String(packet);
 		
-		System.out.println("received " + msg);
+		//System.out.println("received " + msg);
 		
 		String[] tokenized = msg.split(" ");
 
