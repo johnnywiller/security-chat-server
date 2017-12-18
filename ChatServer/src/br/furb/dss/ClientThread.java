@@ -124,10 +124,14 @@ public class ClientThread extends Thread {
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
+		sclient.getOut().flush();
+		
 		// read G
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
+		sclient.getOut().flush();
+		
 		// read Y
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
@@ -159,10 +163,14 @@ public class ClientThread extends Thread {
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
+		sclient.getOut().flush();
+		
 		// read G
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
 
+		sclient.getOut().flush();
+		
 		// read Y
 		thisClient.getIn().read(dhParam);
 		sclient.getOut().write(dhParam);
