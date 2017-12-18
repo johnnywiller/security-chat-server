@@ -73,12 +73,17 @@ public class ClientThread extends Thread {
 	private void routeToUser(byte[] packet) throws IOException {
 
 		byte[] bytesFromUser = Arrays.copyOf(packet, 10);
-
+		
 		String fromUser = new String(bytesFromUser).trim();
 
+		System.out.println("FROM user ="+fromUser + ".");
+		
 		// get user keys
 		SocketClient toSend = ConnectionsHandler.getHandler().getClient(fromUser);
-
+		
+		if (toSend == null)
+			System.out.println("to send null");
+		
 		toSend.getOut().write(packet);
 		toSend.getOut().flush();
 
