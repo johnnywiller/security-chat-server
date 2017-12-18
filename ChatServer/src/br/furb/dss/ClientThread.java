@@ -154,28 +154,37 @@ public class ClientThread extends Thread {
 		byte[] dhParam = new byte[385];
 
 		// read P
-		thisClient.getIn().read(dhParam);
-		sclient.getOut().write(dhParam);
+		// thisClient.getIn().read(dhParam);
+		// sclient.getOut().write(dhParam);
+
+		DHParam param = (DHParam) thisClient.getIn().readObject();
+		sclient.getOut().writeObject(param);
 
 		sclient.getOut().flush();
 
 		System.out.println("SENT DH PARAM (P) " + thisClient.getName());
 
-		dhParam = new byte[385];
+		// dhParam = new byte[385];
 
 		// read G
-		thisClient.getIn().read(dhParam);
-		sclient.getOut().write(dhParam);
+		// thisClient.getIn().read(dhParam);
+		// sclient.getOut().write(dhParam);
+
+		param = (DHParam) thisClient.getIn().readObject();
+		sclient.getOut().writeObject(param);
 
 		sclient.getOut().flush();
 
 		System.out.println("SENT DH PARAM (G) " + thisClient.getName());
 
-		dhParam = new byte[385];
+		// dhParam = new byte[385];
 
 		// read Y
-		thisClient.getIn().read(dhParam);
-		sclient.getOut().write(dhParam);
+		// thisClient.getIn().read(dhParam);
+		// sclient.getOut().write(dhParam);
+
+		param = (DHParam) thisClient.getIn().readObject();
+		sclient.getOut().writeObject(param);
 
 		sclient.getOut().flush();
 
@@ -202,31 +211,40 @@ public class ClientThread extends Thread {
 
 		System.out.println("SENT startsession PACKET " + thisClient.getName());
 
-		byte[] dhParam = new byte[385];
+		// byte[] dhParam = new byte[385];
 
 		// read P
-		thisClient.getIn().read(dhParam);
-		sclient.getOut().write(dhParam);
+		// thisClient.getIn().read(dhParam);
+		// sclient.getOut().write(dhParam);
+
+		DHParam param = (DHParam) thisClient.getIn().readObject();
+		sclient.getOut().writeObject(param);
 
 		sclient.getOut().flush();
 
 		System.out.println("SENT DH PARAM (P) " + thisClient.getName());
 
-		dhParam = new byte[385];
+		// dhParam = new byte[385];
 
 		// read G
-		thisClient.getIn().read(dhParam);
-		sclient.getOut().write(dhParam);
+		// thisClient.getIn().read(dhParam);
+		// sclient.getOut().write(dhParam);
+
+		param = (DHParam) thisClient.getIn().readObject();
+		sclient.getOut().writeObject(param);
 
 		sclient.getOut().flush();
 
 		System.out.println("SENT DH PARAM (G) " + thisClient.getName());
 
-		dhParam = new byte[385];
+		// dhParam = new byte[385];
 
 		// read Y
-		thisClient.getIn().read(dhParam);
-		sclient.getOut().write(dhParam);
+		// thisClient.getIn().read(dhParam);
+		// sclient.getOut().write(dhParam);
+
+		param = (DHParam) thisClient.getIn().readObject();
+		sclient.getOut().writeObject(param);
 
 		sclient.getOut().flush();
 
