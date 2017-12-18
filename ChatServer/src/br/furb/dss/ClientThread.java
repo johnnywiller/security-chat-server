@@ -108,11 +108,14 @@ public class ClientThread extends Thread {
 		// get user keys
 		SocketClient sWho = ConnectionsHandler.getHandler().getClient(who);
 
-		pubKey[0] = (byte) ((sWho.getPublicKey().getEncoded().length - 200));
-
-		System.arraycopy(sWho.getPublicKey().getEncoded(), 0, pubKey, 1, sWho.getPublicKey().getEncoded().length);
-
-		thisClient.getOut().write(pubKey);
+//		pubKey[0] = (byte) ((sWho.getPublicKey().getEncoded().length - 200));
+//
+//		System.arraycopy(sWho.getPublicKey().getEncoded(), 0, pubKey, 1, sWho.getPublicKey().getEncoded().length);
+//
+//		thisClient.getOut().write(pubKey);
+//		thisClient.getOut().flush();
+		
+		thisClient.getOut().writeObject(sWho.getPublicKey());
 		thisClient.getOut().flush();
 
 	}
