@@ -97,6 +97,8 @@ public class ClientThread extends Thread {
 		}
 
 		thisClient.getOut().write("/endonline".getBytes());
+		
+		thisClient.getOut().flush();
 	}
 
 	private void requestPublicKey(String who) throws IOException {

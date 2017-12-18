@@ -58,7 +58,7 @@ public class ListeningSocket extends Thread {
 		client.setName(String.valueOf("DSS-" + counter++));
 		ConnectionsHandler.getHandler().addClient(client);
 
-		String welcome = "Seja bem vindo, seu nome de usuário é " + client.getName();
+		String welcome = "Seja bem vindo, seu nome de usuario eh " + client.getName();
 
 		sock.getOutputStream().write(welcome.getBytes());
 
