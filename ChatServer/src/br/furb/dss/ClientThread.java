@@ -52,7 +52,7 @@ public class ClientThread extends Thread {
 
 		String msg = new String(packet);
 		
-		//System.out.println("received " + msg);
+		System.out.println("received " + msg);
 		
 		String[] tokenized = msg.split(" ");
 
