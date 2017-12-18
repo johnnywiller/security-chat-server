@@ -118,7 +118,7 @@ public class ClientThread extends Thread {
 		thisClient.getOut().writeObject(sWho.getPublicKey());
 		thisClient.getOut().flush();
 		
-		System.out.println("MANDOU CHAVE PRIVADA PARA CLIENTE " + thisClient.getName());
+		System.out.println("MANDOU CHAVE PUBLICA PARA CLIENTE " + thisClient.getName());
 
 	}
 
