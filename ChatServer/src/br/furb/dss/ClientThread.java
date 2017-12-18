@@ -19,11 +19,13 @@ public class ClientThread extends Thread {
 
 		while (true) {
 
-			byte[] received = new byte[255];
+			byte[] received = new byte[MAX_BUF_SIZE];
 
 			try {
-				
+
 				thisClient.getIn().read(received);
+
+				received = getResizedPacket(received);
 
 				parsePacket(received);
 
@@ -72,18 +74,20 @@ public class ClientThread extends Thread {
 
 	private void routeToUser(byte[] packet) throws IOException {
 
+		System.out.println("routing");
+
 		byte[] bytesFromUser = Arrays.copyOf(packet, 10);
-		
+
 		String fromUser = new String(bytesFromUser).trim();
 
-		System.out.println("FROM user ="+fromUser + ".");
-		
+		System.out.println("FROM user =" + fromUser + ".");
+
 		// get user keys
 		SocketClient toSend = ConnectionsHandler.getHandler().getClient(fromUser);
-		
+
 		if (toSend == null)
 			System.out.println("to send null");
-		
+
 		toSend.getOut().write(packet);
 		toSend.getOut().flush();
 
@@ -136,6 +140,15 @@ public class ClientThread extends Thread {
 
 		sclient.getOut().flush();
 
+	}
+
+	private byte[] getResizedPacket(byte[] packet) {
+		byte[] resized;
+		byte size = packet[0];
+
+		resized = Arrays.copyOfRange(packet, 1, size + 1);
+
+		return resized;
 	}
 
 }
