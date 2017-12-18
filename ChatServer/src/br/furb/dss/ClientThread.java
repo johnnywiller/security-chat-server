@@ -23,7 +23,9 @@ public class ClientThread extends Thread {
 			try {
 
 				thisClient.getIn().read(received);
-
+				
+				System.out.println("read");
+				
 				parsePacket(received);
 
 			} catch (IOException e) {
