@@ -67,6 +67,9 @@ public class ClientThread extends Thread {
 			break;
 		case "/changeuser":
 			break;
+		case "/getpublic":
+			requestPublicKey(tokenized[1]);
+			break;
 		default:
 			// default is to send message to another user
 			byte[] bytesFromUser = Arrays.copyOf(resizedPacket, 10);
@@ -76,6 +79,18 @@ public class ClientThread extends Thread {
 			routeToUser(packet, fromUser);
 
 		}
+	}
+
+	private void requestPublicKey(String who) throws IOException {
+
+		byte[] pubKey = new byte[256];
+
+		// get user keys
+		SocketClient sWho = ConnectionsHandler.getHandler().getClient(who);
+
+		thisClient.getOut().write(sWho.getPublicKey().getEncoded());
+		thisClient.getOut().flush();
+
 	}
 
 	private void routeToUser(byte[] packet, String user) throws IOException {
