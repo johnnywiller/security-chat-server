@@ -75,7 +75,7 @@ public class ClientThread extends Thread {
 			break;
 
 		case "/online":
-			requestOnlineUsers();
+			// requestOnlineUsers();
 			break;
 		default:
 			// default is to send message to another user
@@ -108,16 +108,17 @@ public class ClientThread extends Thread {
 		// get user keys
 		SocketClient sWho = ConnectionsHandler.getHandler().getClient(who);
 
-//		pubKey[0] = (byte) ((sWho.getPublicKey().getEncoded().length - 200));
-//
-//		System.arraycopy(sWho.getPublicKey().getEncoded(), 0, pubKey, 1, sWho.getPublicKey().getEncoded().length);
-//
-//		thisClient.getOut().write(pubKey);
-//		thisClient.getOut().flush();
-		
+		// pubKey[0] = (byte) ((sWho.getPublicKey().getEncoded().length - 200));
+		//
+		// System.arraycopy(sWho.getPublicKey().getEncoded(), 0, pubKey, 1,
+		// sWho.getPublicKey().getEncoded().length);
+		//
+		// thisClient.getOut().write(pubKey);
+		// thisClient.getOut().flush();
+
 		thisClient.getOut().writeObject(sWho.getPublicKey());
 		thisClient.getOut().flush();
-		
+
 		System.out.println("MANDOU CHAVE PUBLICA PARA CLIENTE " + thisClient.getName());
 		System.out.println("Comprimento da chave: " + sWho.getPublicKey().getEncoded().length);
 
@@ -133,6 +134,8 @@ public class ClientThread extends Thread {
 
 		toSend.getOut().write(packet);
 		toSend.getOut().flush();
+
+		System.out.println("ROUTED PACKET TO USER " + thisClient.getName());
 
 	}
 
@@ -156,6 +159,8 @@ public class ClientThread extends Thread {
 
 		sclient.getOut().flush();
 
+		System.out.println("SENT DH PARAM (P) " + thisClient.getName());
+
 		dhParam = new byte[385];
 
 		// read G
@@ -164,6 +169,8 @@ public class ClientThread extends Thread {
 
 		sclient.getOut().flush();
 
+		System.out.println("SENT DH PARAM (G) " + thisClient.getName());
+
 		dhParam = new byte[385];
 
 		// read Y
@@ -171,6 +178,8 @@ public class ClientThread extends Thread {
 		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
+
+		System.out.println("SENT DH PARAM (Y) " + thisClient.getName());
 
 	}
 
@@ -191,6 +200,8 @@ public class ClientThread extends Thread {
 		sclient.getOut().write(packet);
 		sclient.getOut().flush();
 
+		System.out.println("SENT startsession PACKET " + thisClient.getName());
+
 		byte[] dhParam = new byte[385];
 
 		// read P
@@ -198,6 +209,8 @@ public class ClientThread extends Thread {
 		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
+
+		System.out.println("SENT DH PARAM (P) " + thisClient.getName());
 
 		dhParam = new byte[385];
 
@@ -207,6 +220,8 @@ public class ClientThread extends Thread {
 
 		sclient.getOut().flush();
 
+		System.out.println("SENT DH PARAM (G) " + thisClient.getName());
+
 		dhParam = new byte[385];
 
 		// read Y
@@ -214,6 +229,8 @@ public class ClientThread extends Thread {
 		sclient.getOut().write(dhParam);
 
 		sclient.getOut().flush();
+
+		System.out.println("SENT DH PARAM (Y) " + thisClient.getName());
 
 	}
 
