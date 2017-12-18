@@ -118,7 +118,7 @@ public class ClientThread extends Thread {
 
 		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client.trim());
 
-		byte[] dhParam = new byte[512];
+		byte[] dhParam = new byte[384];
 
 		// read P
 		thisClient.getIn().read(dhParam);
@@ -157,7 +157,7 @@ public class ClientThread extends Thread {
 		sclient.getOut().write(packet);
 		sclient.getOut().flush();
 
-		byte[] dhParam = new byte[512];
+		byte[] dhParam = new byte[384];
 
 		// read P
 		thisClient.getIn().read(dhParam);
