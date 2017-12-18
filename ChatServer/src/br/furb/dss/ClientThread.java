@@ -2,6 +2,7 @@ package br.furb.dss;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 public class ClientThread extends Thread {
 
@@ -22,23 +23,13 @@ public class ClientThread extends Thread {
 
 			try {
 				
-				//System.out.println("aqui");
 				thisClient.getIn().read(received);
-				
-			//	System.out.println("read");
-				
+
 				parsePacket(received);
 
-			} catch (IOException e) {
+			} catch (Exception e) {
 				break;
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-
 		}
 
 		try {
@@ -54,57 +45,65 @@ public class ClientThread extends Thread {
 	private void parsePacket(byte[] packet) throws IOException, ClassNotFoundException, InterruptedException {
 
 		String msg = new String(packet);
-		
+
 		String[] tokenized = msg.split(" ");
 
 		System.out.println("token 0 = " + tokenized[0]);
-		
+
 		switch (tokenized[0].trim()) {
 
-		case "/msg":
-			break;
-			  
 		case "/startsession":
 			System.out.println("Received start session, I'm " + thisClient.getName());
 			startSession(tokenized[1].trim());
 			break;
-		
-		
+
 		case "/acksession":
 			System.out.println("Received ack session, I'm " + thisClient.getName());
 			ackSession(tokenized[1]);
 			break;
-			default:
-				System.out.println("caiu default");
-				synchronized (this) {
-					sleep(10000);	
-				}
-				
+		default:
+			// default is to send message to another user
+			routeToUser(packet);
+
 		}
 	}
 
+	private void routeToUser(byte[] packet) throws IOException {
+
+		byte[] bytesFromUser = Arrays.copyOf(packet, 10);
+
+		String fromUser = new String(bytesFromUser).trim();
+
+		// get user keys
+		SocketClient toSend = ConnectionsHandler.getHandler().getClient(fromUser);
+
+		toSend.getOut().write(packet);
+		toSend.getOut().flush();
+
+	}
+
 	private void ackSession(String client) throws ClassNotFoundException, IOException {
-		
+
 		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client.trim());
-		
+
 		BigInteger p, g, y;
 
 		p = (BigInteger) thisClient.getIn().readObject();
 		g = (BigInteger) thisClient.getIn().readObject();
 		y = (BigInteger) thisClient.getIn().readObject();
-		
+
 		sclient.getOut().writeObject(p);
 		sclient.getOut().writeObject(g);
 		sclient.getOut().writeObject(y);
-		
+
 		sclient.getOut().flush();
-		
+
 	}
-	
+
 	private void startSession(String client) throws IOException, ClassNotFoundException {
-		
+
 		System.out.println("starting session client = " + client);
-		
+
 		SocketClient sclient = ConnectionsHandler.getHandler().getClient(client);
 
 		String msg = "/startsession " + thisClient.getName();
@@ -117,19 +116,19 @@ public class ClientThread extends Thread {
 
 		sclient.getOut().write(packet);
 		sclient.getOut().flush();
-		
+
 		BigInteger p, g, y;
 
 		p = (BigInteger) thisClient.getIn().readObject();
 		g = (BigInteger) thisClient.getIn().readObject();
 		y = (BigInteger) thisClient.getIn().readObject();
-		
+
 		sclient.getOut().writeObject(p);
 		sclient.getOut().writeObject(g);
 		sclient.getOut().writeObject(y);
-		
+
 		sclient.getOut().flush();
-		
+
 	}
 
 }
