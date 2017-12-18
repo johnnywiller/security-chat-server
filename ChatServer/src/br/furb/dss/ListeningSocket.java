@@ -61,7 +61,8 @@ public class ListeningSocket extends Thread {
 		String welcome = "Seja bem vindo, seu nome de usuario eh " + client.getName();
 
 		sock.getOutputStream().write(welcome.getBytes());
-
+		sock.getOutputStream().flush();
+		
 		ClientThread clientThread = new ClientThread(client);
 		clientThread.start();
 
