@@ -43,7 +43,7 @@ public class ListeningSocket extends Thread {
 
 		Socket sock = serverSocket.accept();
 
-		System.out.println("Received connection from " + sock.getInetAddress().getHostAddress());
+		System.out.println("Received connection from " + sock.getInetAddress().getHostAddress() + ":" + sock.getPort());
 
 		SocketClient client = new SocketClient();
 
@@ -58,7 +58,9 @@ public class ListeningSocket extends Thread {
 		client.setName(String.valueOf("DSS-" + counter++));
 		ConnectionsHandler.getHandler().addClient(client);
 
-//		String welcome = "Seja bem vindo, seu nome de usuario eh " + client.getName();
+		String welcome = "Seja bem vindo, seu nome de usuario eh " + client.getName();
+		System.out.println(welcome);
+		
 //
 //		sock.getOutputStream().write(welcome.getBytes());
 //		sock.getOutputStream().flush();
