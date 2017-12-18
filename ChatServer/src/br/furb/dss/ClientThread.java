@@ -21,7 +21,7 @@ public class ClientThread extends Thread {
 			byte[] received = new byte[255];
 
 			try {
-
+				System.out.println("aqui");
 				thisClient.getIn().read(received);
 				
 				System.out.println("read");
